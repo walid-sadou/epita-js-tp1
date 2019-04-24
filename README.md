@@ -1,4 +1,4 @@
-# TP0 - Basics
+# TP1 - Basics
 
 In this TP you will build a small library of actions for handling a Pictures collection and then hook them into the app to make it functionnal.
 
