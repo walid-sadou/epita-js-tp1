@@ -1,5 +1,10 @@
-import list from "./actions/list";
+// import list from "./actions/list";
+// import add from "./actions/add";
+
+import pictures from "./fixtures";
+import {getState} from "./store";
 import add from "./actions/add";
+import remove from "./actions/remove";
 
 const picturesGridElement = document.getElementById("pictures-grid");
 const pictureInputElement = document.getElementById("picture-url-input");
@@ -10,18 +15,13 @@ const pictureItemTemplate = document.getElementById("picture-item-template");
 const getInputContents = () => pictureInputElement.value;
 const clearInputContents = () => (pictureInputElement.value = "");
 
-const addPictureHandler = () => {
-  const url = getInputContents();
-
-  // FIXME: use your actions functions to add a new picture
-  // FIXME: bonus, trim eventual whitespaces and validate content
-
-  clearInputContents();
-};
-
 const refreshGrid = () => {
-  // FIXME: use your functions to get all the elements
+// FIXME: use your functions to get all the elements
   const items = [];
+
+  getState().forEach((picture) => {
+    items.push(picture);
+  });
 
   const fragment = document.createDocumentFragment();
 
@@ -31,22 +31,34 @@ const refreshGrid = () => {
     const imgElement = clone.querySelector(".picture-item-image");
 
     // FIXME: set the URL from your Picture model.
-    imgElement.src = "https://picsum.photos/458/354";
+    fetch(i).then(res => {
+      imgElement.src = res.url;
+    });
 
     const deleteButtonElement = clone.querySelector(
       ".picture-item-delete-button"
     );
-
-    // FIXME: use your functions to delete the selected element
-    deleteButtonElement.addEventListener("click", () => {});
+    const updateButtonElement = clone.querySelector(".picture-item-update-button");
 
     fragment.appendChild(clone);
+
+    // FIXME: use your functions to delete the selected element
+    deleteButtonElement.addEventListener("click", () => {
+      remove(i);
+      refreshGrid();
+    });
   });
 
   picturesGridElement.innerHTML = "";
   picturesGridElement.appendChild(fragment);
 };
 
-refreshGrid();
+const addPictureHandler = () => {
+  const url = getInputContents();
+  add(url);
+  clearInputContents();
+  refreshGrid();
+};
 
+refreshGrid();
 pictureAddButtonElement.addEventListener("click", () => addPictureHandler());

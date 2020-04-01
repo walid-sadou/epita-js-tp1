@@ -8,6 +8,16 @@
 *
 */
 
-const update = () => {};
+import {getState, setState} from "../store";
+
+const update = (url, newUrl) => {
+    const state = getState();
+    const index = state.indexOf(url);
+    if (index > -1){
+        state.splice(index, 1, newUrl);
+        console.log(state);
+    }
+    return setState(state);
+};
 
 export default update;

@@ -7,6 +7,16 @@
 *
 */
 
-const remove = () => {};
+import {getState, setState} from "../store";
+
+const remove = (url) => {
+    const state = getState();
+    const index = state.indexOf(url);
+    if (index > -1){
+        state.splice(index, 1);
+        console.log(state);
+    }
+    return setState(state);
+};
 
 export default remove;
